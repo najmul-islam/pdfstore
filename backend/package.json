@@ -1,4 +1,14 @@
 {
+  "name": "backend",
+  "version": "1.0.0",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "server": "nodemon app.js"
+  },
+  "author": "Najmul Islam",
+  "license": "ISC",
+  "description": "",
   "dependencies": {
     "bcrypt": "^5.0.1",
     "cors": "^2.8.5",
@@ -11,13 +21,7 @@
     "pdf-lib": "^1.17.1",
     "pdfjs-dist": "^2.14.305"
   },
-  "name": "backend",
-  "version": "1.0.0",
-  "main": "app.js",
-  "scripts": {
-    "dev": "nodemon app.js"
-  },
-  "author": "Najmul Islam",
-  "license": "ISC",
-  "description": ""
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
 }
