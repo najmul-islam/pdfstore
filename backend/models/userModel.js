@@ -7,12 +7,19 @@ const userSchema = mongoose.Schema(
     name: {
       type: String,
       require: true,
-      unique: true,
     },
     email: {
       type: String,
       require: true,
       unique: true,
+      trim: true,
+      lowercase: true,
+      validate: {
+        validator: function (v) {
+          return /^[\w.-]+@[\w.-]+\.[a-zA-Z]{2,}$/.test(v);
+        },
+        message: (props) => `${props.value} is not a valid email address!`,
+      },
     },
     password: {
       type: String,
@@ -31,12 +38,14 @@ const userSchema = mongoose.Schema(
 
 userSchema.pre("save", async function (next) {
   try {
-    if (this.isNew) {
+    // Hash the password if it's being created or updated
+    if (this.isNew || this.isModified("password")) {
       const salt = await bcrypt.genSalt(10);
       const hashedPassword = await bcrypt.hash(this.password, salt);
       this.password = hashedPassword;
 
-      if (this.email === process.env.ADMIN_EMAIL) {
+      // Set the user role if the email matches the admin email
+      if (this.isNew && this.email === process.env.ADMIN_EMAIL) {
         this.role = "admin";
       }
       next();
