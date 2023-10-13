@@ -30,6 +30,18 @@ const userSchema = mongoose.Schema(
       enum: ["admin", "moderator", "user"],
       default: "user",
     },
+    drive: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Book",
+      },
+    ],
+    likes: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Book",
+      },
+    ],
   },
   {
     timestamps: true,
