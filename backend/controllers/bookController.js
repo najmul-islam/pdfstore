@@ -1,58 +1,42 @@
 const asyncHanlder = require("express-async-handler");
-const path = require("path");
 const Book = require("../models/bookModel");
-// const pdfjsLib = require("pdfjs-dist");
-// const { PDFDocument } = require("pdf-lib");
 
 // get all book
 const getAllBook = asyncHanlder(async (req, res) => {
-  const books = await Book.find({});
+  const books = await Book.find({}).populate("user", "_id name");
 
   res.status(200).json(books);
 });
 
 // get single book
-const getSignleBook = asyncHanlder(async (req, res) => {
-  const book = await Book.findById({ id: req.id });
+const getSingleBook = asyncHanlder(async (req, res) => {
+  const bookId = req.params;
+  const book = await Book.findById({ _id: bookId });
 
   res.status(200).json(book);
 });
 
-// // get user book
-// const getUserBooks = asyncHanlder(async(req,res) => {
-//   const userBooks = await Book.find({})
-// })
-
 // create book
 const createBook = asyncHanlder(async (req, res) => {
-  const { name, year, writer } = req.body;
-  console.log(req.file);
+  const { title, year, language, subject, author } = req.body;
+  const userId = req.user._id;
 
-  // const { filename } = req.file;
-  // const pdf = await PDFDocument.load(req.file.filename);
-  // console.log(pdf);
-  // const fileUrl = path.join(
-  //   __dirname,
-  //   "../public/uploads/pdf/class-5-1655216876057.pdf"
-  // );
-  // console.log("fileurl :", fileUrl);
-  // pdfjsLib.getDocument(fileUrl).promise.then((pdfDoc_) => {
-  //   const pdfDoc = pdfDoc_;
-  //   console.log(pdfDoc);
-  // });
-  // console.log(doc);
-
-  if (!name && !year && !writer && !filename) {
+  if (!title && !year && !writer && !filename) {
     res.status(400);
     throw new Error("Please add all filed");
   }
 
   const newBook = await Book.create({
-    user: req.user.id,
-    name,
+    title,
     year,
-    // book: filename,
-    writer,
+    language,
+    subject,
+    author,
+    user: userId,
+    book: req.book_link,
+    cover: req.cover_link,
+    size: req.book_size,
+    pages: req.book_pages,
   });
 
   res.status(200).json(newBook);
@@ -112,7 +96,7 @@ const deleteBook = asyncHanlder(async (req, res) => {
 
 module.exports = {
   getAllBook,
-  getSignleBook,
+  getSingleBook,
   createBook,
   updateBook,
   deleteBook,
