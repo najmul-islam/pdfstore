@@ -58,15 +58,6 @@ const bookUploader = asyncHanlder(async (req, res, next) => {
     "-" +
     Date.now() +
     extension;
-  // change name
-  const coverName =
-    title
-      .toLowerCase()
-      .replace(/[.:;?!~,_`"&|()<>{}\[\]\r\n/\\]+/g, "")
-      .split(/[ .:;?!~,_`"&|()<>{}\[\]\r\n/\\]+/)
-      .join("-") +
-    "-" +
-    Date.now();
 
   try {
     const bookResult = await cloudinary.uploader.upload(book.tempFilePath, {
