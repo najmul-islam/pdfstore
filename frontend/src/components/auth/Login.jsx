@@ -3,7 +3,7 @@ import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
-import { useRegisterMutation } from "../../features/auth/authApi";
+import { useLoginMutation } from "../../features/auth/authApi";
 import * as Yup from "yup";
 
 import {
@@ -26,10 +26,10 @@ import {
   VisibilityOffOutlined,
   LoginOutlined,
 } from "@mui/icons-material";
-const Register = () => {
+
+const Login = () => {
   const { user } = useSelector((state) => state.auth);
-  const [register, { isLoading, isError, isSuccess, error }] =
-    useRegisterMutation();
+  const [login, { isLoading, isError, isSuccess, error }] = useLoginMutation();
 
   const [showPassword, setShowPassword] = useState(false);
   const [checked, setChecked] = useState(false);
@@ -45,7 +45,6 @@ const Register = () => {
   const formik = useFormik({
     // initial value
     initialValues: {
-      name: "",
       email: "",
       password: "",
     },
@@ -64,7 +63,7 @@ const Register = () => {
       try {
         setStatus({ success: false });
         setSubmitting(false);
-        register(values);
+        login(values);
       } catch (error) {
         setStatus({ success: false });
         setErrors({ submit: error.message });
@@ -95,7 +94,7 @@ const Register = () => {
         fontWeight="bold"
         sx={{ textAlign: "center" }}
       >
-        Register
+        Login
       </Typography>
       <Box
         component="form"
@@ -103,34 +102,14 @@ const Register = () => {
         sx={{ maxWidth: "600px", margin: "0 auto" }}
       >
         <Stack direction="column" spacing={2}>
-          {/* name */}
           <Box>
-            <InputLabel htmlFor="name">Name</InputLabel>
-            <OutlinedInput
-              fullWidth
-              id="name"
-              type="name"
-              name="name"
-              placeholder="Full name"
-              sx={{ height: "45px" }}
-              value={formik.values.name}
-              onBlur={formik.handleBlur}
-              onChange={formik.handleChange}
-              error={Boolean(formik.touched.email && formik.errors.email)}
-            />
-            {formik.touched.name && formik.errors.name && (
-              <FormHelperText error>{formik.errors.name}</FormHelperText>
-            )}
-          </Box>
-          {/* email */}
-          <Box>
-            <InputLabel htmlFor="email">Email Address</InputLabel>
+            <InputLabel htmlFor="email-login">Email Address</InputLabel>
             <OutlinedInput
               fullWidth
               id="email"
               type="email"
               name="email"
-              placeholder="Email address"
+              placeholder="Enter email address"
               sx={{ height: "45px" }}
               value={formik.values.email}
               onBlur={formik.handleBlur}
@@ -142,14 +121,13 @@ const Register = () => {
             )}
           </Box>
 
-          {/* password */}
           <Box>
-            <InputLabel htmlFor="password">Password</InputLabel>
+            <InputLabel htmlFor="password-login">Password</InputLabel>
             <OutlinedInput
               fullWidth
               id="password"
               name="password"
-              placeholder="Password"
+              placeholder="Enter password"
               sx={{ height: "45px" }}
               type={showPassword ? "text" : "password"}
               value={formik.values.password}
@@ -208,7 +186,7 @@ const Register = () => {
             color="primary"
             startIcon={<LoginOutlined />}
           >
-            {isLoading ? <CircularProgress size={25} /> : " Create account"}
+            {isLoading ? <CircularProgress size={25} /> : " Login"}
           </Button>
         </Stack>
 
@@ -219,9 +197,9 @@ const Register = () => {
             size="large"
             variant="outlined"
             color="primary"
-            onClick={() => navigate("/login")}
+            onClick={() => navigate("/register")}
           >
-            Login
+            Create account
           </Button>
         </Stack>
       </Box>
@@ -229,4 +207,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default Login;
