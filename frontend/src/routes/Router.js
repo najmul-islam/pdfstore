@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 // layout
 import PublicLayout from "../layouts/PublicLayout";
 import UserLayout from "../layouts/UserLayout";
@@ -9,16 +9,16 @@ import LoginPage from "../pages/LoginPage";
 import RegisterPage from "../pages/RegisterPage";
 
 // user page
-import DrivePage from "../pages/DrivePage";
-import LikePage from "../pages/LikePage";
-import AccountPage from "../pages/AccountPage";
-import UploadPage from "../pages/UploadPage";
 import AboutPage from "../pages/AboutPage";
-import ContactUs from "../pages/ContactUs";
-import TermsAndPrivacy from "../pages/TermsAndPrivacy";
+import AccountPage from "../pages/AccountPage";
 import CategoriesPage from "../pages/CategoriesPage";
 import CategoryPage from "../pages/CategoryPage";
+import ContactUs from "../pages/ContactUs";
+import DrivePage from "../pages/DrivePage";
 import Feedback from "../pages/Feedback";
+import LikePage from "../pages/LikePage";
+import TermsAndPrivacy from "../pages/TermsAndPrivacy";
+import UploadPage from "../pages/UploadPage";
 
 const Router = () => {
   return (
