@@ -1,7 +1,7 @@
 import React from "react";
 
 const LikePage = () => {
-  return <div>MyLikes</div>;
+  return <h1>MyLikes</h1>;
 };
 
 export default LikePage;
