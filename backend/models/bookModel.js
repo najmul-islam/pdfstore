@@ -6,16 +6,31 @@ const bookSchema = mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
     },
-    name: {
+    title: {
+      type: String,
+    },
+    cover: {
+      type: String,
+    },
+    pages: {
       type: String,
     },
     year: {
       type: String,
     },
+    size: {
+      type: String,
+    },
+    language: {
+      type: String,
+    },
+    subject: {
+      type: Array,
+    },
     book: {
       type: String,
     },
-    writer: {
+    author: {
       type: String,
     },
   },

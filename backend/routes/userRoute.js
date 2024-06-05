@@ -3,18 +3,15 @@ const router = express.Router();
 const {
   registerUser,
   loginUser,
-  userBooks,
   profile,
-  createAvatar,
+  updateProfile,
 } = require("../controllers/userController");
 
-const protect = require("../middlewares/authMiddleware");
-const upload = require("../middlewares/uploadAvatarMiddleware");
+const { isUser } = require("../middlewares/authMiddleware");
 
 router.post("/register", registerUser);
 router.post("/login", loginUser);
-router.post("/avatar", protect, upload.single("avatar"), createAvatar);
-router.get("/books/:id", userBooks);
-router.get("/profile", protect, profile);
+
+router.route("/profile").get(isUser, profile).put(isUser, updateProfile);
 
 module.exports = router;

@@ -1,8 +1,5 @@
 const asyncHanlder = require("express-async-handler");
-const bcrypt = require("bcrypt");
-const generateToken = require("../configs/generateToken");
 const User = require("../models/userModel");
-const Book = require("../models/bookModel");
 
 // register user
 const registerUser = asyncHanlder(async (req, res) => {
@@ -20,15 +17,11 @@ const registerUser = asyncHanlder(async (req, res) => {
     throw new Error("User already exists");
   }
 
-  // hash password
-  const salt = await bcrypt.genSalt(10);
-  const hashedPassword = await bcrypt.hash(password, salt);
-
   // create user
   const user = await User.create({
     name,
     email,
-    password: hashedPassword,
+    password,
   });
 
   if (user) {
@@ -36,6 +29,8 @@ const registerUser = asyncHanlder(async (req, res) => {
       _id: user.id,
       name: user.name,
       email: user.email,
+      role: user.role,
+      token: user.generateToken(),
     });
   } else {
     res.status(400);
@@ -49,12 +44,13 @@ const loginUser = asyncHanlder(async (req, res) => {
 
   const user = await User.findOne({ email });
 
-  if (user && (await bcrypt.compare(password, user.password))) {
+  if (user && (await user.isValidPassword(password))) {
     res.json({
       _id: user.id,
       name: user.name,
       email: user.email,
-      token: generateToken(user._id),
+      role: user.role,
+      token: user.generateToken(),
     });
   } else {
     res.status(400);
@@ -64,43 +60,46 @@ const loginUser = asyncHanlder(async (req, res) => {
 
 // profile
 const profile = asyncHanlder(async (req, res) => {
+  const userId = req.user._id;
+  const user = await User.findById(userId).select("-password");
+
+  if (!user) {
+    res.status(404);
+    throw new Error("User not found");
+  }
+
   res.status(200).json(req.user);
 });
 
-// avatar upoald
-const createAvatar = asyncHanlder(async (req, res) => {
-  const { _id } = req.user;
-  const { filename } = req.file;
-  const user = await User.findById({ _id }).select("-password");
+// edit profile
+const updateProfile = asyncHanlder(async (req, res) => {
+  const { name, password } = req.body;
+  const userId = req.user._id;
+
+  const user = await User.findById(userId);
 
   if (!user) {
-    res.status(400);
-    throw new Error("There no user");
+    res.status(404);
+    throw new Error("user not found");
   }
 
-  const updatedUser = await User.findOneAndUpdate(
-    { _id },
-    { avatar: filename },
-    {
-      runValidators: true,
-      new: true,
-    }
+  // Update the user's properties
+  user.name = name;
+  user.password = password;
+
+  // save updated properties
+  const updatedUser = await user.save();
+  // Select all fields except for the password
+  const userWithoutPassword = await User.findById(updatedUser._id).select(
+    "-password"
   );
 
-  res.status(200).json(updatedUser);
-});
-
-// user books
-const userBooks = asyncHanlder(async (req, res) => {
-  const userBooks = await Book.find({ user: req.params.id });
-
-  res.status(200).json(userBooks);
+  res.status(200).json(userWithoutPassword);
 });
 
 module.exports = {
   registerUser,
   loginUser,
-  userBooks,
-  createAvatar,
   profile,
+  updateProfile,
 };
