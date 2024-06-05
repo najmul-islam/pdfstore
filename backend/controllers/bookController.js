@@ -21,7 +21,7 @@ const createBook = asyncHanlder(async (req, res) => {
   const { title, year, language, subject, author } = req.body;
   const userId = req.user._id;
 
-  if (!title && !year && !writer && !filename) {
+  if (!title && !year && !writer) {
     res.status(400);
     throw new Error("Please add all filed");
   }

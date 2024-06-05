@@ -9,9 +9,13 @@ const {
 } = require("../controllers/bookController");
 
 const { bookUploader } = require("../middlewares/bookMiddleware");
+const { coverUploader } = require("../middlewares/coverMiddleware");
 const { isUser } = require("../middlewares/authMiddleware");
 
-router.route("/").get(getAllBook).post(isUser, bookUploader, createBook);
+router
+  .route("/")
+  .get(getAllBook)
+  .post(isUser, coverUploader, bookUploader, createBook);
 router
   .route("/:id")
   .get(getSingleBook)

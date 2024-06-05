@@ -8,6 +8,14 @@ const bookUploader = asyncHanlder(async (req, res, next) => {
   const { title } = req.body;
   const { book } = req.files;
 
+  // const pdfBuffer = fs.readFileSync(book, "binary");
+  // console.log("pdfBuffer", pdfBuffer);
+  // const pages = pdfBuffer.split("%");
+  // console.log("pages", pages);
+  // const firstPage = pages[pages.length - 1];
+  // const str = Buffer.from(firstPage);
+  // console.log("str", str.toString());
+
   if (!book) {
     res.status(400);
     throw new Error("Please add a book");
