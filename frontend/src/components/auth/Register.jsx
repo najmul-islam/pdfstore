@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import { useRegisterMutation } from "../../features/auth/authApi";
 import * as Yup from "yup";
@@ -16,6 +16,7 @@ import {
   IconButton,
   InputAdornment,
   InputLabel,
+  Link,
   OutlinedInput,
   Stack,
   Typography,
@@ -88,20 +89,26 @@ const Register = () => {
   }, [user, isSuccess, isError, error, navigate]);
 
   return (
-    <Box padding={5}>
-      <Typography
-        variant="h4"
-        marginBottom={2}
-        fontWeight="bold"
-        sx={{ textAlign: "center" }}
+    <Box padding={5} sx={{ maxWidth: "600px", margin: "0 auto" }}>
+      <Stack
+        direction="row"
+        justifyContent="space-between"
+        alignItems="center"
+        paddingY={4}
       >
-        Register
-      </Typography>
-      <Box
-        component="form"
-        onSubmit={formik.handleSubmit}
-        sx={{ maxWidth: "600px", margin: "0 auto" }}
-      >
+        <Typography variant="h5" marginBottom={2} fontWeight="bold">
+          Register
+        </Typography>
+        <Link
+          component={NavLink}
+          to="/login"
+          sx={{ fontSize: "14px", fontWeight: "bold" }}
+        >
+          All ready have an account?
+        </Link>
+      </Stack>
+
+      <Box component="form" onSubmit={formik.handleSubmit}>
         <Stack direction="column" spacing={2}>
           {/* name */}
           <Box>
@@ -180,50 +187,32 @@ const Register = () => {
           </Box>
         </Stack>
 
-        <Stack
-          direction="row"
-          justifyContent="space-between"
-          alignContent="center"
-          py={2}
+        <FormControlLabel
+          control={
+            <Checkbox
+              checked={checked}
+              onChange={(event) => setChecked(event.target.checked)}
+              name="checked"
+              color="primary"
+              size="small"
+            />
+          }
+          label={<Typography variant="body2">Remember me</Typography>}
+          sx={{ paddingY: "15px" }}
+        />
+
+        <Button
+          disableElevation
+          disabled={isLoading}
+          fullWidth
+          size="large"
+          type="submit"
+          variant="contained"
+          color="primary"
+          startIcon={<LoginOutlined />}
         >
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={checked}
-                onChange={(event) => setChecked(event.target.checked)}
-                name="checked"
-                color="primary"
-                size="small"
-              />
-            }
-            label={<Typography variant="body2">Remember me</Typography>}
-          />
-
-          <Button
-            disableElevation
-            disabled={isLoading}
-            size="large"
-            type="submit"
-            variant="contained"
-            color="primary"
-            startIcon={<LoginOutlined />}
-          >
-            {isLoading ? <CircularProgress size={25} /> : " Create account"}
-          </Button>
-        </Stack>
-
-        <Stack direction="row" justifyContent="center" py={2}>
-          <Button
-            disableElevation
-            disabled={isLoading}
-            size="large"
-            variant="outlined"
-            color="primary"
-            onClick={() => navigate("/login")}
-          >
-            Login
-          </Button>
-        </Stack>
+          {isLoading ? <CircularProgress size={25} /> : "Register"}
+        </Button>
       </Box>
     </Box>
   );
