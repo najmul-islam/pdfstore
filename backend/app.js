@@ -21,6 +21,11 @@ app.use(
 app.use("/api/user", require("./routes/userRoute"));
 app.use("/api/books", require("./routes/bookRoute"));
 
+// home route
+app.get("/", (req, res) => {
+  res.send("<h1>Hello world</h1>");
+});
+
 // error handler
 app.use(errorHandler);
 
@@ -30,7 +35,7 @@ const port = process.env.PORT || 5000;
 const start = async () => {
   try {
     await database(process.env.MONGO_URI);
-    app.listen(port, console.log(`Server is listening port ${port}...`));
+    app.listen(port, console.log(`server is listening port ${port}...`));
   } catch (err) {
     console.log(err);
   }
