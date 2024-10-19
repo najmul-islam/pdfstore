@@ -13,11 +13,11 @@ import AboutPage from "../pages/AboutPage";
 import AccountPage from "../pages/AccountPage";
 import CategoriesPage from "../pages/CategoriesPage";
 import CategoryPage from "../pages/CategoryPage";
-import ContactUs from "../pages/ContactUs";
+import ContactUs from "../pages/ContactPage";
 import DrivePage from "../pages/DrivePage";
-import Feedback from "../pages/Feedback";
+import Feedback from "../pages/FeedbackPage";
 import LikePage from "../pages/LikePage";
-import TermsAndPrivacy from "../pages/TermsAndPrivacy";
+import TermsAndPrivacy from "../pages/TermsAndPrivacyPage";
 import UploadPage from "../pages/UploadPage";
 
 const Router = () => {
