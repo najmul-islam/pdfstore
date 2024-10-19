@@ -57,27 +57,6 @@ const Sidebar = () => {
           </Toolbar>
           <SidebarList />
         </Drawer>
-
-        {/* desktop view */}
-        {/* <Drawer
-          variant="permanent"
-          sx={{
-            display: { xs: "none", lg: "block" },
-            "& .MuiDrawer-paper": {
-              boxSizing: "border-box",
-              width: drawerWidth,
-              // borderRight: "",
-            },
-          }}
-        >
-          <Toolbar disableGutters sx={{ paddingX: "20px" }}>
-            <Typography variant="h6" component="div">
-              Subscenebd
-            </Typography>
-          </Toolbar>
-
-          <SidebarList />
-        </Drawer> */}
       </Box>
     </>
   );

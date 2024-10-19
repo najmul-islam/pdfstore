@@ -1,97 +1,27 @@
-import { Link, useLocation, useNavigate } from "react-router-dom";
 import SidebarListItem from "./SidebarListItem";
+import { List, Divider, Button } from "@mui/material";
 import {
-  List,
-  Divider,
-  Box,
-  Button,
-  useTheme,
-  ListItem,
-  ListItemButton,
-  ListItemText,
-  ListItemIcon,
-} from "@mui/material";
-import {
-  AccessTimeOutlined,
-  BarChartOutlined,
-  VideoLibraryOutlined,
-  MovieOutlined,
-  SmartDisplayOutlined,
-  MovieFilterOutlined,
-  MusicVideoOutlined,
-  ExitToApp,
   Home,
+  ExitToApp,
   TrendingUp,
   AppRegistration,
   ContactPage,
   Info,
   Feedback,
 } from "@mui/icons-material";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../../features/auth/authSlice";
 
 const SidebarList = () => {
-  const { pathname } = useLocation();
-  const navigate = useNavigate();
-  const theme = useTheme();
-  const isDarkMode = theme.palette.mode === "dark";
+  const { user } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
 
+  const handleLogout = () => {
+    dispatch(logout());
+  };
   return (
     <>
-      <List>
-        {/* <ListItem disablePadding>
-          <ListItemButton>
-            <ListItemText
-              sx={{
-                color: (theme) => theme.palette.text.primary,
-                textAlign: "end",
-                fontSize: "24px",
-                fontWeight: "bold",
-              }}
-            >
-              Login
-            </ListItemText>
-            <ListItemIcon
-              sx={{
-                minWidth: "30px",
-                marginLeft: "15px",
-                color: (theme) => theme.palette.text.primary,
-              }}
-            >
-              <ExitToApp />
-            </ListItemIcon>
-          </ListItemButton>
-        </ListItem> */}
-        <SidebarListItem
-          link="/login"
-          icon={<ExitToApp />}
-          text="Login"
-          // query="/latest/all"
-        />
-
-        {/* <Button
-          component={Link}
-          to="/login"
-          variant="outlined"
-          endIcon={<ExitToApp />}
-          sx={{
-            textTransform: "none",
-            // borderRadius: "20px",
-            right: "0",
-            width: "105px",
-            outlineColor: isDarkMode ? "#28384F" : "#DFF1FE",
-            borderColor: isDarkMode ? "#28384F" : "#DFF1FE",
-            color: isDarkMode ? "#3ea6ff" : "#065fd4",
-            "&:hover": {
-              background: isDarkMode ? "#28384F" : "#DFF1FE",
-              outlineColor: isDarkMode ? "#28384F" : "#DFF1FE",
-              borderColor: isDarkMode ? "#28384F" : "#DFF1FE",
-            },
-          }}
-        >
-          Sing in
-        </Button> */}
-      </List>
-      <Divider />
-      <List sx={{ paddingTop: "0" }}>
+      <List sx={{ paddingY: "0" }}>
         <SidebarListItem link="/" icon={<Home />} text="Home" />
         <SidebarListItem
           link="/category/most-popular"
@@ -114,6 +44,30 @@ const SidebarList = () => {
 
         <SidebarListItem link="/feedback" icon={<Feedback />} text="Feedback" />
       </List>
+      <Divider />
+
+      {user ? (
+        <List sx={{ paddingY: 0 }}>
+          {/* <Button
+            size="xl"
+            fullWidth
+            handleClick={handleLogout}
+            endIcon={<ExitToApp />}
+          >
+            Logout
+          </Button> */}
+          <SidebarListItem
+            link="/"
+            icon={<ExitToApp />}
+            text="Logout"
+            onClick={handleLogout}
+          />
+        </List>
+      ) : (
+        <List sx={{ paddingY: 0 }}>
+          <SidebarListItem link="/login" icon={<ExitToApp />} text="Login" />
+        </List>
+      )}
     </>
   );
 };
