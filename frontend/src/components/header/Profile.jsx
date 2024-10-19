@@ -62,7 +62,11 @@ const Profile = ({ user }) => {
     <>
       <IconButton onClick={handleOpenUserMenu}>
         <Badge color="error" variant="dot" invisible={invisible}>
-          <Avatar alt={user?.name?.toLowerCase()} src={user?.avatar} />
+          <Avatar
+            sx={{ width: 36, height: 36 }}
+            alt={user?.name?.toLowerCase()}
+            src={user?.avatar}
+          />
         </Badge>
       </IconButton>
       <Menu
@@ -91,7 +95,11 @@ const Profile = ({ user }) => {
           }}
         >
           <ListItemButton>
-            <Avatar alt={user?.name?.toLowerCase()} src={user?.avatar} />
+            <Avatar
+              sx={{ width: 36, height: 36 }}
+              alt={user?.name?.toLowerCase()}
+              src={user?.avatar}
+            />
             <ListItemText sx={{ ml: 2 }}>{user?.name}</ListItemText>
           </ListItemButton>
         </ListItem>
